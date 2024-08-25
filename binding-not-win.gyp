@@ -2,10 +2,11 @@
   'targets': [
     {
       'target_name': 'zoom',
-      "cflags": ["<!@(yaz-config --libs <!@(if test '4' = <!@(pkg-config --modversion yaz|cut -f1 -d '.');then echo -n '--cflags'; '--include';fi))"],
-      "libraries": ["<!@(yaz-config --libs)"],
+      "cflags": ["<!@(pkg-config --cflags yaz)"],
+      "libraries": ["<!@(pkg-config --libs yaz)"],
       'include_dirs': [
-        '<!(node -e "require(\'nan\')")'
+        "<!(node -e 'require(\"nan\")')",
+        "<!@(pkg-config --cflags-only-I yaz | sed 's/-I//g')"
       ],
       'sources': [
         'src/zoom.cc',
